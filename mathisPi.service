@@ -1,0 +1,14 @@
+#put this file in /lib/systemd/system/ and make sure the ExecStart line matches
+#where you've put the mathisPi.py file
+
+[Unit]
+Description=display system info on oled at boot
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/Documents/mathisPi.py
+User=pi
+
+[Install]
+WantedBy=multi-user.target
+
