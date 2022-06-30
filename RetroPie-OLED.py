@@ -120,6 +120,8 @@ def main():
     #old_Speed = new_Speed = get_cpu_speed()
 
     while True:
+        # try to open the log file, failing that display:
+        # (msg1, msg2, cpu_temp, IP)
         try:
             f = open('/tmp/retropie_oled.log', 'r', -1,"utf-8")
             # except FileNotFoundError:
@@ -139,6 +141,8 @@ def main():
                 msg1_size = draw.textsize(msg1, font=font_system)
                 msg2_size = draw.textsize(msg2, font=font_msg)
 
+                # 'draw' to the image object so that it can be displayed to the
+                # screen.
                 draw.rectangle((0,0,width,height), outline=0, fill=0)
                 draw.text(((width-msg1_size[0])/2, top), msg1, font=font_system, fill=255)
                 draw.text(((width-98)/2, top+18), msg2, font=font_msg, fill=255)

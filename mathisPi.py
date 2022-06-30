@@ -35,57 +35,48 @@ from PIL import Image, ImageDraw, ImageFont
 # Raspberry Pi pin configuration:
 RST = None     # on the PiOLED this pin isnt used
 # 128x32 display with hardware I2C:
-# disp = Adafruit_SSD1306.SSD1306_128_32(rst=RST)
+# oled = Adafruit_SSD1306.SSD1306_128_32(rst=RST)
 # 128x64 display with hardware I2C:
-disp = Adafruit_SSD1306.SSD1306_128_64(rst=RST, i2c_address=0x3c)
+oled = Adafruit_SSD1306.SSD1306_128_64(rst=RST, i2c_address=0x3c)
 # Note you can change the I2C address by passing an i2c_address parameter
 # Note you can specify an explicit I2C bus number
 
 # Initialize library.
-disp.begin()
+oled.begin()
 
-# Clear display.
-disp.clear()
-disp.display()
+def main():
 
-# Create blank image for drawing.
-# Make sure to create image with mode '1' for 1-bit color.
-width = disp.width
-height = disp.height
-image = Image.new('1', (width, height))
+  # Clear display.
+  oled.clear()
+  oled.display()
 
-# check if there is already one of these running
-#TODO: need to use this pid to kill if greater than 0? need to be sure and NOT 
-# get the grep pid also. Right now if it's not running, it would get itself or
-# the grep and kill that which will get messy and might cause issues with lock
-# files being left...
-cmd = "ps -ef | grep mathisPi | awk 'NR==1{printf \"%d\", $2}'"
-CurrentPid = int(subprocess.check_output(cmd, shell = True))
+  # Create blank image for drawing.
+  # Make sure to create image with mode '1' for 1-bit color.
+  width = oled.width
+  height = oled.height
+  image = Image.new('1', (width, height))
 
-# Get drawing object to draw on image.
-draw = ImageDraw.Draw(image)
+  # Get drawing object to draw on image.
+  draw = ImageDraw.Draw(image)
 
-# Draw a black filled box to clear the image.
-draw.rectangle((0,0,width,height), outline=0, fill=0)
+  # Draw a black filled box to clear the image.
+  draw.rectangle((0,0,width,height), outline=0, fill=0)
 
-# Draw some shapes.
-# First define some constants to allow easy resizing of shapes.
-padding = -2
-top = padding
-bottom = height-padding
-# Move left to right keeping track of the current x position for drawing shapes.
-x = 0
+  # Draw some shapes.
+  # First define some constants to allow easy resizing of shapes.
+  padding = -2
+  top = padding
+  bottom = height-padding
 
+  # Load default font.
+  # font = ImageFont.load_default()
 
-# Load default font.
-# font = ImageFont.load_default()
+  # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
+  # Some other nice fonts to try: http://www.dafont.com/bitmap.php
+  fontsize = 12
+  font = ImageFont.truetype('/home/pi/Documents/RobotoMono-VariableFont_wght.ttf', fontsize)
 
-# Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
-# Some other nice fonts to try: http://www.dafont.com/bitmap.php
-fontsize = 12
-font = ImageFont.truetype('/home/pi/Documents/RobotoMono-VariableFont_wght.ttf', fontsize)
-
-while True:
+  while True:
 
     # Draw a black filled box to clear the image.
     draw.rectangle((0,0,width,height), outline=0, fill=0)
@@ -141,6 +132,22 @@ while True:
     draw.text((x, top+51), Uptime, font=font, fill=255)
 
     # Display image.
-    disp.image(image)
-    disp.display()
+    oled.image(image)
+    oled.display()
     time.sleep(10)
+
+
+if __name__ == "__main__":
+  import sys
+
+  try:
+    main()
+
+  # Catch all other non-exit errors
+  except Exception as e:
+    sys.stderr.write("Unexpected exception: %s" % e)
+    sys.exit(1)
+
+  # Catch the remaining exit errors
+  except:
+    sys.exit(0)

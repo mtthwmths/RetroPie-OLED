@@ -5,4 +5,6 @@
 # runcommand of Retorpie:  https://github.com/retropie/retropie-setup/wiki/runcommand
 # edit and path: $ sudo nano /opt/retropie/configs/all/runcommand-onend.sh
 
-echo -e "notice\nRasMiniPi\nmaintitle" > /tmp/retropie_oled.log
+# if you echo into a file like this, it replaces the contents of the file with
+# whatever the echo is printing.
+echo -e "notice\nRasMiniPi\nmaintitle" > /tmp/mathisPi.log

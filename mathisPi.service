@@ -1,5 +1,7 @@
-#put this file in /lib/systemd/system/ and make sure the ExecStart line matches
-#where you've put the mathisPi.py file
+# run the following:
+#   - $sudo cp ./mathisPi.service /lib/systemd/system/
+#   - $sudo chmod 644 /lib/systemd/system/mathisPi.service
+# Also, make sure the ExecStart line matches where you've put the mathisPi.py file
 
 [Unit]
 Description=display system info on oled at boot
